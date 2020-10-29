@@ -1,0 +1,26 @@
+body{
+    background-image: linear-gradient(to right, #98f3ed , #e8f398);
+}
+.addTodoGroup{
+    margin: 0;
+    border: none;
+    background-color: #59fd84;
+}
+.addTodoHeader{
+    text-align: center;
+}
+.addTodoHeader>button{
+    background-color: papayawhip;
+    border: none;
+    padding: 0;
+    float: right;
+}
+.todolistGroup{
+    padding-top: 0px !important;
+}
+.sortDropdown{
+    background-color: white !important;
+}
+.todosTable{
+    font-size: 17px !important;
+}
