@@ -1,64 +1,73 @@
 import './App.css';
 import React,{Component} from 'react';
-import taskForm from "./components/taskForm";
+import TaskForm from "./components/taskForm";
+import TaskList from "./components/tasklist";
+import Control from "./components/control";
 
 class App extends Component{
-    constructor(supers) {
-        super(supers);
+    constructor(props) {
+        super(props);
         this.state={
-            todo:[
-                {
-                    name:'Learn React js',
-                    status:0
-                }
-            ]
+            tasks:[],
+            showAddTodo:false
         }
     }
-
+    componentDidMount() {
+        if(localStorage && localStorage.getItem('tasks')){
+            var tasks= JSON.parse(localStorage.getItem('tasks'));
+            this.setState({tasks:tasks});
+        }
+        else{
+            this.onGenerateData();
+        }
+    }
+    onGenerateData = ()=>{
+        var tasks=[
+            {
+                id:this.generateID(),
+                name:"Learn reactjs",
+                status:1
+            },{
+                id:this.generateID(),
+                name:"learn Angular",
+                status:0
+            },{
+                id:this.generateID(),
+                name:"Learn Elasticsearch",
+                status:-1
+            }
+        ];
+        this.setState({tasks:tasks});
+        localStorage.setItem('tasks',JSON.stringify(tasks));
+    }
+    generateID=()=>{
+        return this.generate()+this.generate()+this.generate()+this.generate()+this.generate();
+    }
+    generate=()=>{
+        return Math.floor(Math.random()*10).toString();
+    }
+    onShowAddTodo = ()=>{
+        if(!this.state.showAddTodo)
+            this.setState({showAddTodo:true});
+    }
+    oncloseForm=()=>{
+        this.setState({showAddTodo:!this.state.showAddTodo});
+    }
     render(){
-        let element=this.state.todo.map((item,index)=>{
-            return (
-            <tr>
-                <td>{index+1}</td>
-                <td>{item.name}</td>
-                <td>{item.status}</td>
-                <td className="right aligned"><i className="close icon red"></i>&nbsp;&nbsp;<i className="icon pencil green"></i></td>
-            </tr>);
-        })
       return (
           <div className='ui container'>
               <br/><br/>
               <div className='row'>
-                  <div className='ui two column grid'>
-                      <taskForm/>
-                      <div className="eleven wide column todolistGroup">
-                          <button className="button ui blue" type="button"><i className="add icon"></i>Them cong viec</button>
-
-                          <div className="ui search">
-                              <br/>
-                              <div className="ui icon input">
-                                  <input className="prompt" type="text" placeholder="Nhap tu khoa..." />
-                                  <i className="search icon"></i>
-                              </div>
-                              &nbsp;&nbsp;&nbsp;
-                              <select className="ui dropdown selected sortDropdown" name="sortTodo" id="sortTodo">
-                                  <option value="1">Ten CV</option>
-                                  <option value="2">Trang Thai</option>
-                              </select>
-                          </div>
-                          <table className="ui selectable inverted table todosTable">
-                              <thead>
-                              <tr>
-                                  <th>STT</th>
-                                  <th>Ten cong viec</th>
-                                  <th>Trang thai</th>
-                                  <th className="right aligned">Thao tac</th>
-                              </tr>
-                              </thead>
-                              <tbody>
-                              {element}
-                              </tbody>
-                          </table>
+                  <div className={this.state.showAddTodo?'ui two column grid':'ui one column grid'}>
+                      {this.state.showAddTodo?<TaskForm oncloseForm={this.oncloseForm} showAddTodo={this.state.showAddTodo}/>:''}
+                      <div className={this.state.showAddTodo?"eleven wide column todolistGroup":"sixteen wide column todolistGroup"}>
+                          <button className="button ui blue" type="button" onClick={this.onShowAddTodo}>
+                              <i className="add icon"></i>Them cong viec
+                          </button>
+                          {/*Control*/}
+                          <Control/>
+                          {/*TaskList*/}
+                          <TaskList tasks={this.state.tasks} />
                       </div>
                   </div>
               </div>
