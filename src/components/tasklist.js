@@ -11,7 +11,7 @@ class TaskList extends React.Component{
         let element=tasks.map((item,index)=>{
             return (
                 <TaskListItem taskItem={item} key={index}/>
-                );
+            );
         })
         return (
             <div>

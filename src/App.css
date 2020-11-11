@@ -5,6 +5,7 @@ body{
     margin: 0;
     border: none;
     background-color: #59fd84;
+    height: 280px;
 }
 .addTodoHeader{
     text-align: center;
@@ -23,4 +24,7 @@ body{
 }
 .todosTable{
     font-size: 17px !important;
+}
+.groupButtonAction{
+    text-align: center ;
 }
