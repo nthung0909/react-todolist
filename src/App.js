@@ -20,6 +20,8 @@ class App extends Component{
         else{
             this.onGenerateData();
         }
+        if(tasks==0)
+            this.onGenerateData();
     }
     onGenerateData = ()=>{
         var tasks=[
@@ -60,17 +62,40 @@ class App extends Component{
         return check?true:false;
     }
     onAddTodo=(data)=>{
+        if(!data.name){
+            alert("Ten cong viec khong duoc trong");
+            return;
+        }
         var {tasks=[]}=this.state;
-        console.log("data"+data);
-        console.log(this.checkTodo(data,tasks));
+        //console.log(data);
+        // console.log(this.checkTodo(data,tasks));
         if(this.checkTodo(data,tasks)){
             alert("Ten cong viec phai la duy nhat");
             return;
         }
         data.id=this.generateID();
         tasks.push(data);
+        console.log(tasks);
         this.setState({tasks:tasks});
         localStorage.setItem('tasks',JSON.stringify(tasks));
+    }
+    onDeleteTodo=(id)=>{
+        var {tasks}=this.state;
+        for (const index in tasks) {
+            if(tasks[index].id===id){
+                tasks.splice(index,1);
+                break;
+            }
+        }
+        this.setState({tasks:tasks});
+        localStorage.setItem('tasks',JSON.stringify(tasks));
+    }
+    onSearchChange=(key)=>{
+        let tasks= JSON.parse(localStorage.getItem('tasks'));
+        let newTasks=tasks.filter(item=>{
+            return item.name.indexOf(key)!==-1;
+        });
+        this.setState({tasks:newTasks});
     }
     render(){
         return (
@@ -80,15 +105,18 @@ class App extends Component{
                     <div className={this.state.showAddTodo?'ui two column grid':'ui one column grid'}>
                         {this.state.showAddTodo?<TaskForm oncloseForm={this.oncloseForm}
                                                           showAddTodo={this.state.showAddTodo}
-                                                          onAddTodo={this.onAddTodo}/>:''}
+                                                          onAddTodo={this.onAddTodo}
+                                                          />:''}
                         <div className={this.state.showAddTodo?"eleven wide column todolistGroup":"sixteen wide column todolistGroup"}>
                             <button className="button ui blue" type="button" onClick={this.onShowAddTodo}>
                                 <i className="add icon"></i>Them cong viec
                             </button>
                             {/*Control*/}
-                            <Control/>
+                            <Control onSearchChange={this.onSearchChange}/>
                             {/*TaskList*/}
-                            <TaskList tasks={this.state.tasks} />
+                            <TaskList tasks={this.state.tasks}
+                                      onDeleteTodo={this.onDeleteTodo}
+                            />
                         </div>
                     </div>
                 </div>
