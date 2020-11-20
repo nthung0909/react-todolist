@@ -97,6 +97,23 @@ class App extends Component{
         });
         this.setState({tasks:newTasks});
     }
+    onChangeTodo=(data)=>{
+        var {tasks}=this.state;
+        // task.forEach(item=>{
+        //     if(item.id===data.id){
+        //         item=data;
+        //         return;
+        //     }
+        // })
+        for(let item of tasks){
+            if(item.id==data.id){
+                item.name=data.name;
+                item.status=data.status;
+            }
+        }
+        this.setState({tasks:tasks});
+        localStorage.setItem('tasks',JSON.stringify(tasks));
+    }
     render(){
         return (
             <div className='ui container'>
@@ -116,6 +133,7 @@ class App extends Component{
                             {/*TaskList*/}
                             <TaskList tasks={this.state.tasks}
                                       onDeleteTodo={this.onDeleteTodo}
+                                      onChangeTodo={this.onChangeTodo}
                             />
                         </div>
                     </div>

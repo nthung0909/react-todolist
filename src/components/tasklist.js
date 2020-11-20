@@ -2,9 +2,12 @@ import React from 'react';
 import TaskListItem from "./tasklistItem";
 
 class TaskList extends React.Component{
-    // constructor(props) {
-    //     super (props);
-    // }
+    constructor(props) {
+        super (props);
+        this.state={
+            isEdit:false
+        }
+    }
     // onDeleteTodo=(data)=>{
     //     this.props.onDeleteTodo(data);
     // }
@@ -12,7 +15,11 @@ class TaskList extends React.Component{
         var {tasks}=this.props;
         let element=tasks.map((item,index)=>{
             return (
-                <TaskListItem onDeleteTodo={this.props.onDeleteTodo} taskItem={item} key={index}/>
+                <TaskListItem isEdit={this.state.isEdit}
+                              onDeleteTodo={this.props.onDeleteTodo}
+                              taskItem={item} key={index}
+                                onChangeTodo={this.props.onChangeTodo}
+                />
             );
         })
         return (

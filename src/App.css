@@ -29,10 +29,14 @@ body{
     text-align: center ;
 }
 .editTask input{
-    border:none;
+    border: none;
     padding:2px 5px 2px 10px;
 }
-.editTask input:checked{
-    border: none;
-    color: red;
+.editTask input:focus{
+    outline: 0;
+    border: 0.5px solid deepskyblue;
+}
+.editTask select:focus{
+    outline: 0;
+    border:0.5px solid deepskyblue;
 }
