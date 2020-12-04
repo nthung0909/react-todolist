@@ -3,13 +3,16 @@ import React,{Component} from 'react';
 import TaskForm from "./components/taskForm";
 import TaskList from "./components/tasklist";
 import Control from "./components/control";
+import './demo';
 
 class App extends Component{
     constructor(props) {
         super(props);
         this.state={
             tasks:[],
-            showAddTodo:false
+            showAddTodo:false,
+            searchKey:'',
+            orderBy:1
         }
     }
     componentDidMount() {
@@ -91,20 +94,23 @@ class App extends Component{
         localStorage.setItem('tasks',JSON.stringify(tasks));
     }
     onSearchChange=(key)=>{
+        let newTasks=[];
         let tasks= JSON.parse(localStorage.getItem('tasks'));
-        let newTasks=tasks.filter(item=>{
-            return item.name.indexOf(key)!==-1;
-        });
+        if(key=='')
+            this.setState({tasks:newTasks});
+        if(this.state.orderBy==1){
+            newTasks=tasks.filter(item=>{
+                return item.name.indexOf(key)!==-1;
+            });
+        }else{
+            newTasks=tasks.filter(item=>{
+                return item.status.indexOf(key)!==-1;
+            });
+        }
         this.setState({tasks:newTasks});
     }
     onChangeTodo=(data)=>{
         var {tasks}=this.state;
-        // task.forEach(item=>{
-        //     if(item.id===data.id){
-        //         item=data;
-        //         return;
-        //     }
-        // })
         for(let item of tasks){
             if(item.id==data.id){
                 item.name=data.name;
@@ -113,6 +119,24 @@ class App extends Component{
         }
         this.setState({tasks:tasks});
         localStorage.setItem('tasks',JSON.stringify(tasks));
+    }
+    onSelectChange=(key)=>{
+        debugger;
+        let tasks= this.state.tasks;
+        let newTasks=[];
+        if(key==1)
+            newTasks=tasks.sort((a,b)=>{
+                return a.status-b.status;
+            });
+        else
+            newTasks=tasks.sort((a,b)=>{
+                if(a.name>b.name)
+                    return 1;
+                else if(a.name<b.name)
+                    return -1;
+                return 0;
+            })
+        this.setState({tasks:newTasks,orderBy:key});
     }
     render(){
         return (
@@ -129,7 +153,9 @@ class App extends Component{
                                 <i className="add icon"></i>Them cong viec
                             </button>
                             {/*Control*/}
-                            <Control onSearchChange={this.onSearchChange}/>
+                                <Control onSearchChange={this.onSearchChange}
+                                         onSelectChange={this.onSelectChange}
+                                />
                             {/*TaskList*/}
                             <TaskList tasks={this.state.tasks}
                                       onDeleteTodo={this.onDeleteTodo}

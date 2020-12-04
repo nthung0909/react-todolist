@@ -27,7 +27,7 @@ class TaskListItem extends React.Component{
         let {taskItem}=this.props;
         if(taskItem.name!==this.state.name||taskItem.status!==this.state.status)
             this.props.onChangeTodo(this.state);
-        this.setState({isEdit:true});
+        this.setState({isEdit:false});
     }
     render() {
         var todoItem=this.props;

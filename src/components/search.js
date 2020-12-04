@@ -7,12 +7,15 @@ class Search extends React.Component{
     onSearchChange=(event)=>{
         this.props.onSearchChange(event.target.value);
     }
+
     render() {
         return (
-            <div className="ui icon input">
-                <input className="prompt" name="search" type="text" onChange={this.onSearchChange} placeholder="Nhap tu khoa..." />
-                <i className="search icon"></i>
-            </div>
+            <>
+                <div className="ui icon input">
+                    <input className="prompt" name="search" type="text" onChange={this.onSearchChange} placeholder="Nhap tu khoa..." />
+                    <i className="search icon"></i>
+                </div>
+            </>
         )
     }
 }

@@ -22,6 +22,10 @@ body{
 .sortDropdown{
     background-color: white !important;
 }
+.sortDropdown:only-child{
+    color: #0e8c8c !important;
+}
+
 .todosTable{
     font-size: 17px !important;
 }

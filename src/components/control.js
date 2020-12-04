@@ -6,9 +6,7 @@ class Control extends React.Component{
     constructor(props) {
         super (props);
     }
-    // onSearchChange=(key)=>{
-    //     console.log(key);
-    // }
+
     render() {
         return (
             <div className="ui search">
@@ -16,7 +14,9 @@ class Control extends React.Component{
                 {/*search*/}
                 <Search onSearchChange={this.props.onSearchChange}/>
                 &nbsp;&nbsp;&nbsp;
+
                 {/*sort*/}
+                <Sort onSelectChange={this.props.onSelectChange}/>
             </div>
         )
     }
